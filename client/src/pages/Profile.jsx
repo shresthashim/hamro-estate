@@ -9,21 +9,24 @@ import {
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
+  signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess,
 } from "../redux/user/userSlice";
 
 // ConfirmationModal component
-const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
   return (
     isOpen && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-md">
-          <p className="text-lg font-semibold mb-4">Are you sure you want to delete your account?</p>
-          <div className="flex justify-end">
-            <button className="mr-4 text-gray-500 hover:text-gray-700" onClick={onClose}>
+      <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+        <div className='bg-white p-6 rounded-md'>
+          <p className='text-lg font-semibold mb-4'>{message}</p>
+          <div className='flex justify-end'>
+            <button className='mr-4 text-gray-500 hover:text-gray-700' onClick={onClose}>
               Cancel
             </button>
-            <button className="text-red-700 hover:text-red-900" onClick={onConfirm}>
-              Delete
+            <button className='text-red-700 hover:text-red-900' onClick={onConfirm}>
+              Confirm
             </button>
           </div>
         </div>
@@ -40,7 +43,8 @@ const Profile = () => {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
+  const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [isSignOutConfirmationOpen, setSignOutConfirmationOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -72,11 +76,11 @@ const Profile = () => {
   };
 
   const handleDelete = () => {
-    setConfirmationOpen(true);
+    setDeleteConfirmationOpen(true);
   };
 
   const confirmDelete = async () => {
-    setConfirmationOpen(false);
+    setDeleteConfirmationOpen(false);
     try {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
@@ -94,8 +98,32 @@ const Profile = () => {
     }
   };
 
-  const closeConfirmation = () => {
-    setConfirmationOpen(false);
+  const closeDeleteConfirmation = () => {
+    setDeleteConfirmationOpen(false);
+  };
+
+  const handleSignOut = () => {
+    setSignOutConfirmationOpen(true);
+  };
+
+  const confirmSignOut = async () => {
+    setSignOutConfirmationOpen(false);
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
+    }
+  };
+
+  const closeSignOutConfirmation = () => {
+    setSignOutConfirmationOpen(false);
   };
 
   useEffect(() => {
@@ -126,69 +154,82 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept="image/*" />
+    <div className='p-3 max-w-lg mx-auto'>
+      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+        <input onChange={(e) => setFile(e.target.files[0])} type='file' ref={fileRef} hidden accept='image/*' />
         <img
           onClick={() => fileRef.current.click()}
           src={formData.avatar || currentUser.avatar}
-          alt="profile"
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
+          alt='profile'
+          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
-        <p className="text-sm self-center">
+        <p className='text-sm self-center'>
           {fileUploadError ? (
-            <span className="text-red-700">Error Image upload (image must be less than 2 mb)</span>
+            <span className='text-red-700'>Error Image upload (image must be less than 2 mb)</span>
           ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
+            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className="text-green-700">Image successfully uploaded!</span>
+            <span className='text-green-700'>Image successfully uploaded!</span>
           ) : (
             ""
           )}
         </p>
         <input
-          type="text"
-          placeholder="Username"
-          id="username"
-          className="border p-3 rounded-2xl focus:outline-none"
+          type='text'
+          placeholder='Username'
+          id='username'
+          className='border p-3 rounded-2xl focus:outline-none'
           onChange={handleChange}
           defaultValue={currentUser.username}
         />
         <input
-          type="email"
-          placeholder="Email"
-          id="email"
+          type='email'
+          placeholder='Email'
+          id='email'
           onChange={handleChange}
-          className="border p-3 rounded-2xl focus:outline-none"
+          className='border p-3 rounded-2xl focus:outline-none'
           defaultValue={currentUser.email}
         />
         <input
-          type="password"
-          placeholder="Password"
-          id="password"
+          type='password'
+          placeholder='Password'
+          id='password'
           onChange={handleChange}
-          className="border p-3 rounded-2xl focus:outline-none"
+          className='border p-3 rounded-2xl focus:outline-none'
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
         >
           {loading ? "Loading..." : "Update"}
         </button>
       </form>
-      <div className="flex justify-between mt-5">
-        <span onClick={handleDelete} className="text-red-700 cursor-pointer">
+      <div className='flex justify-between mt-5'>
+        <span onClick={handleDelete} className='text-red-700 cursor-pointer'>
           Delete account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
+          Sign out
+        </span>
       </div>
 
-      <p className="text-red-700 mt-5">{error ? error : ""}</p>
-      <p className="text-green-700">{updateSuccess ? "User is Updated Successfully!" : ""}</p>
+      <p className='text-red-700 mt-5'>{error ? error : ""}</p>
+      <p className='text-green-700'>{updateSuccess ? "User is Updated Successfully!" : ""}</p>
 
-      {/* Confirmation Modal */}
-      <ConfirmationModal isOpen={isConfirmationOpen} onClose={closeConfirmation} onConfirm={confirmDelete} />
+      {/* Confirmation Modals */}
+      <ConfirmationModal
+        isOpen={isDeleteConfirmationOpen}
+        onClose={closeDeleteConfirmation}
+        onConfirm={confirmDelete}
+        message='Are you sure you want to delete your account?'
+      />
+      <ConfirmationModal
+        isOpen={isSignOutConfirmationOpen}
+        onClose={closeSignOutConfirmation}
+        onConfirm={confirmSignOut}
+        message='Are you sure you want to sign out?'
+      />
     </div>
   );
 };
