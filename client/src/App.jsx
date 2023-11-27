@@ -6,20 +6,22 @@ import About from "./pages/About";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/Signin";
 import Header from "./components/Header";
+import PrivateRoute from "./components/privateRoute";
 const App = () => {
   return (
     <div>
       <BrowserRouter>
-      <Header/>
+        <Header />
         <Routes>
-          <Route path='/' element = {<Home/>} />
-          <Route path='/sign-in' element = {<SignIn/>} />
-          <Route path='/sign-up' element = {<SignUp/>} />
-          <Route path='/about' element = {<About/>} />
-          <Route path='/profile' element = {<Profile/>} />
+          <Route path='/' element={<Home />} />
+          <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/about' element={<About />} />
+          <Route element={<PrivateRoute />}>
+            <Route path='/profile' element={<Profile />} />
+          </Route>
         </Routes>
       </BrowserRouter>
-
     </div>
   );
 };
