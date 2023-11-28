@@ -14,6 +14,7 @@ import {
   signOutUserSuccess,
 } from "../redux/user/userSlice";
 
+import { Link } from "react-router-dom";
 // ConfirmationModal component
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
   return (
@@ -195,6 +196,7 @@ const Profile = () => {
           type='password'
           placeholder='Password'
           id='password'
+          autoComplete='current-passsword'
           onChange={handleChange}
           className='border p-3 rounded-2xl focus:outline-none'
         />
@@ -204,6 +206,9 @@ const Profile = () => {
         >
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link to='/create-listing' className='bg-green-700 text-white p-3 rounded-2xl uppercase text-center hover:opacity-90'>
+          Create Listing
+        </Link>
       </form>
       <div className='flex justify-between mt-5'>
         <span onClick={handleDelete} className='text-red-700 cursor-pointer'>
