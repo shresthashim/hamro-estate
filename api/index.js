@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 
 const userRouter = require("./routes/userroute");
 const authRouter = require("./routes/authroute");
+const listingRouter = require("./routes/listingroute");
 const cookieParser = require("cookie-parser");
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
