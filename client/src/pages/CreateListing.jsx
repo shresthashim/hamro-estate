@@ -4,7 +4,7 @@ import { app } from "../firebase";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const CreateListing = () =>{
+const CreateListing = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
@@ -311,5 +311,5 @@ const CreateListing = () =>{
       </form>
     </main>
   );
-}
+};
 export default CreateListing;
