@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Search = () => {
   const navigate = useNavigate();
   const [sideBarData, setSideBarData] = useState({
@@ -70,7 +71,7 @@ const Search = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDeafult();
+    e.preventDefault();
 
     const urlParams = new URLSearchParams();
     urlParams.set("searchTerm", sideBarData.searchTerm);
@@ -92,7 +93,7 @@ const Search = () => {
           <div className='flex items-center gap-2'>
             <label className='whitespace-nowrap font-semibold'>Search Term:</label>
             <input
-              value={setSideBarData.searchTerm}
+              value={sideBarData.searchTerm}
               onChange={handleChange}
               type='text'
               id='searchTerm'
@@ -153,4 +154,5 @@ const Search = () => {
     </div>
   );
 };
+
 export default Search;
