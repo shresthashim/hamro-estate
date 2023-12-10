@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function Contact({ listing }) {
+const Contact = ({ listing }) => {
   const [landlord, setLandlord] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const onChange = (e) => {
     setMessage(e.target.value);
   };
@@ -25,8 +25,7 @@ export default function Contact({ listing }) {
       {landlord && (
         <div className='flex flex-col gap-2'>
           <p>
-            Contact <span className='font-semibold'>{landlord.username}</span>{' '}
-            for{' '}
+            Contact <span className='font-semibold'>{landlord.username}</span> for{" "}
             <span className='font-semibold'>{listing.name.toLowerCase()}</span>
           </p>
           <textarea
@@ -40,13 +39,14 @@ export default function Contact({ listing }) {
           ></textarea>
 
           <Link
-          to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
-          className='bg-slate-700 text-white text-center p-3 uppercase rounded-2xl hover:opacity-95'
+            to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
+            className='bg-slate-700 text-white text-center p-3 uppercase rounded-2xl hover:opacity-95'
           >
-            Send Message          
+            Send Message
           </Link>
         </div>
       )}
     </>
   );
-}
+};
+export default Contact;
