@@ -1,3 +1,4 @@
+import e from "express";
 import { Listing } from "../models/listingmodel.js";
 import User from "../models/usermodel.js";
 import { errorHandler } from "../utils/error.js";
@@ -77,4 +78,4 @@ const getUser = async (req, res, next) => {
   }
 };
 
-module.exports = { test, updateUser, deleteUser, getUserListing, getUser };
+export { test, updateUser, deleteUser, getUserListing, getUser };

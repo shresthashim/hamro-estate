@@ -106,4 +106,4 @@ const getListings = async (req, res, next) => {
   }
 };
 
-module.exports = { createListing, deleteListing, updateListing, getListing, getListings };
+export { createListing, deleteListing, updateListing, getListing, getListings };
