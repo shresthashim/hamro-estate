@@ -106,4 +106,4 @@ const getListings = async (req, res, next) => {
   }
 };
 
-export { createListing, deleteListing, updateListing, getListing, getListings };
+export default { createListing, deleteListing, updateListing, getListing, getListings };

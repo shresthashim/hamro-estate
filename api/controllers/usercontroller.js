@@ -78,4 +78,4 @@ const getUser = async (req, res, next) => {
   }
 };
 
-export { test, updateUser, deleteUser, getUserListing, getUser };
+export default { test, updateUser, deleteUser, getUserListing, getUser };

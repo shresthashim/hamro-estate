@@ -60,4 +60,4 @@ const listingSchema = new mongoose.Schema(
 
 const Listing = mongoose.model("Listing", listingSchema);
 
-export { Listing };
+export default Listing;

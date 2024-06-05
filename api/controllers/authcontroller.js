@@ -71,4 +71,4 @@ const signout = async (req, res, next) => {
   }
 };
 
-export { signup, signin, google, signout };
+export default { signup, signin, google, signout };
