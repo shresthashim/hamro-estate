@@ -1,7 +1,7 @@
-import { Listing } from "../models/listingmodel.js";
+import Listing from "../models/listingmodel.js";
 import { errorHandler } from "../utils/error.js";
 
-const createListing = async (req, res, next) => {
+export const createListing = async (req, res, next) => {
   try {
     const listing = await Listing.create(req.body);
     return res.status(201).json(listing);
@@ -10,7 +10,7 @@ const createListing = async (req, res, next) => {
   }
 };
 
-const deleteListing = async (req, res, next) => {
+export const deleteListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
 
   if (!listing) {
@@ -29,7 +29,7 @@ const deleteListing = async (req, res, next) => {
   }
 };
 
-const updateListing = async (req, res, next) => {
+export const updateListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
     return res.status(404).json({ error: "Listing Not Found!" });
@@ -45,7 +45,7 @@ const updateListing = async (req, res, next) => {
     next(error);
   }
 };
-const getListing = async (req, res, next) => {
+export const getListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
 
@@ -58,7 +58,7 @@ const getListing = async (req, res, next) => {
   }
 };
 
-const getListings = async (req, res, next) => {
+export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -105,5 +105,3 @@ const getListings = async (req, res, next) => {
     next(error);
   }
 };
-
-export default { createListing, deleteListing, updateListing, getListing, getListings };

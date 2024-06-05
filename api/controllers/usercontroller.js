@@ -1,9 +1,8 @@
-import e from "express";
-import { Listing } from "../models/listingmodel.js";
+import Listing from "../models/listingmodel.js";
 import User from "../models/usermodel.js";
-import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
-const test = (req, res) => {
+import { errorHandler } from "../utils/error.js";
+export const test = (req, res) => {
   try {
     res.json({
       message: "Hello!",
@@ -14,7 +13,7 @@ const test = (req, res) => {
   }
 };
 
-const updateUser = async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your account!"));
 
   try {
@@ -42,7 +41,7 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-const deleteUser = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only delete your account!"));
 
   try {
@@ -54,7 +53,7 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const getUserListing = async (req, res, next) => {
+export const getUserListing = async (req, res, next) => {
   if (req.user.id === req.params.id) {
     try {
       const listings = await Listing.find({ userRef: req.params.id });
@@ -66,7 +65,7 @@ const getUserListing = async (req, res, next) => {
     return next(errorHandler(401, "You can only view your own listings!"));
   }
 };
-const getUser = async (req, res, next) => {
+export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return next(errorHandler(404, "User Not Found!"));
