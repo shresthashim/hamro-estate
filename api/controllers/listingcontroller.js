@@ -1,5 +1,5 @@
-const { Listing } = require("../models/listingmodel");
-const { errorHandler } = require("../utils/error");
+import { Listing } from "../models/listingmodel.js";
+import { errorHandler } from "../utils/error.js";
 
 const createListing = async (req, res, next) => {
   try {

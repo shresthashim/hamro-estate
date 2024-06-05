@@ -1,7 +1,7 @@
-const { Listing } = require("../models/listingmodel");
-const User = require("../models/usermodel");
-const { errorHandler } = require("../utils/error");
-const bcryptjs = require("bcryptjs");
+import { Listing } from "../models/listingmodel.js";
+import User from "../models/usermodel.js";
+import { errorHandler } from "../utils/error.js";
+import bcryptjs from "bcryptjs";
 const test = (req, res) => {
   try {
     res.json({
